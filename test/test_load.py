@@ -35,6 +35,26 @@ class TestLoad(unittest.TestCase):
         url = 'https://tabelog.com/tokyo/A1234/A123456/12345678/'
         with self.assertRaises(ValueError):
             load_restaurant_details(url)
+    
+    def test_bulkload_restaurant_details(self):
+        url1 = 'https://tabelog.com/tokyo/A1311/A131102/13007981/'
+        url2 = 'https://tabelog.com/tokyo/A1311/A131102/13003755/'
+        restaurants = [{'name': '吾妻橋', 'url': url1},{'name': '佐久良', 'url': url2}]
+        details = load_restaurant_details(restaurants)
+        details[0].pop('update')
+        expect = {
+                "name": "吾妻橋 やぶそば",
+                "url": "https://tabelog.com/tokyo/A1311/A131102/13007981/",
+                "rate": "3.72",
+                "bookmark": "43671",
+                "comment": "608",
+                "address": "東京都 墨田区 吾妻橋 1-11-2",
+                "latitude": "35.70803783870925",
+                "longitude": "139.79864458463263",
+                "award": "そば 百名店 2024"
+        }
+        self.assertDictEqual(details[0], expect)
+        self.assertEqual(len(details), 2)
 
 if __name__ == '__main__':
     unittest.main()
