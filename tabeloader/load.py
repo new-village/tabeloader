@@ -83,12 +83,8 @@ class RestaurantDetailsExtractor:
         address = self.soup.select_one('p.rstinfo-table__address').get_text(separator=" ", strip=True)
         latlong = self.soup.select_one('img.rstinfo-table__map-image').get('data-original')
         match = re.search(r'center=([-\d.]+),([-\d.]+)&', latlong)
-        if match:
-            latitude = match.group(1)
-            longitude = match.group(2)
-        else:
-            latitude = 0
-            longitude = 0
+        latitude = match.group(1) if match else 0
+        longitude = match.group(2) if match else 0
         return address, latitude, longitude
 
     def create_restaurant_details(self):
