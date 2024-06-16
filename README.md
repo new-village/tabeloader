@@ -28,5 +28,14 @@ Copy the URL of the category for which you want to create a listing from the [Hy
 [{'name': 'お好み焼き屋', 'url': 'https://tabelog.com/tokyo/X1234/X123456/12345678/', 'category': 'お好み焼き 百名店 2024'}, ...]
 ```
 
+### Get restaurant detail list
+Copy the URL of the specific restaurant URL from the [Tabelog](https://tabelog.com/en/) website. The `load_restaurant_details` function can be executed with a URL as argument to obtain the URL, name, address, award etc from restaurant in list of dict format.
+```python
+>>> import tabeloader
+>>> restaurants = tabeloader.load_restaurant_details('https://tabelog.com/tokyo/X1234/X123456/12345678/')
+>>> print(restaurants)
+[{"name": "お店", "url": "https://tabelog.com/tokyo/X1234/X123456/12345678/", "rate": "2.14", "bookmark": "12",  "comment": "4", "address": "東京都 千代田区 12", "latitude": "31.37949403848039", "longitude": "130.44756924746517", "award": "定食 百名店 2021"}]
+```
+
 ## Disclaimer
 This library was created for learning Python libraries. The developer accepts no responsibility for any consequences resulting from the use of this library.  

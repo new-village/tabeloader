@@ -1,7 +1,7 @@
-import requests
+import datetime
 import re
+import requests
 from bs4 import BeautifulSoup
-
 
 def load_restaurants(url) -> list:
     """
@@ -20,7 +20,9 @@ def load_restaurants(url) -> list:
     return _create_restaurants_list(page)
 
 def load_restaurant_details(url) -> list:
-    return 'load_restaurants'
+    page = _download_page(url)
+    extractor = RestaurantDetailsExtractor(page, url)
+    return extractor.create_restaurant_details()
 
 def _download_page(url) -> BeautifulSoup:
     """
@@ -63,55 +65,45 @@ def _create_restaurants_list(soup) -> list:
 def _remove_tabelog(text: str) -> str:
     return re.sub(r'\[?食べログ\]?', '', text).strip()
 
-# url = 'https://award.tabelog.com'
+class RestaurantDetailsExtractor:
+    def __init__(self, soup, url):
+        self.soup = soup
+        self.url = url
+        self.details = {}
 
-# def load():
-#     # Retrieve the category page
-#     page = get_page(url + '/hyakumeiten')
-#     category_list = create_category_list(page)
-#     # Retrieve restaurant name and URL for each category
-#     restaurant_list = create_restaurant_list(category_list)
+    def _extract_award(self):
+        badge = self.soup.select_one('div.rstinfo-table-badge-award')
+        if badge:
+            category = badge.select_one('span i').text.strip()
+            return category.replace(" 選出店", "")
+        else:
+            return ''
 
-#     # for category in category_list:
-#     #     page = get_page(category['url'])
-#     #     category['restaurants'] = create_restaurant_list(page)
-#     return category_list
+    def _extract_address(self):
+        address = self.soup.select_one('p.rstinfo-table__address').get_text(separator=" ", strip=True)
+        latlong = self.soup.select_one('img.rstinfo-table__map-image').get('data-original')
+        match = re.search(r'center=([-\d.]+),([-\d.]+)&', latlong)
+        if match:
+            latitude = match.group(1)
+            longitude = match.group(2)
+        else:
+            latitude = 0
+            longitude = 0
+        return address, latitude, longitude
 
-# def create_restaurant_list(category_list) -> list:
-#     """
-#     Retrieves the list of restaurants from the category page and returns it as a list of dictionaries.
+    def create_restaurant_details(self):
+        self.details['name'] = self.soup.select_one('h2.display-name').text.strip()
+        self.details['url'] = self.url
+        self.details['rate'] = self.soup.select_one('span.rdheader-rating__score-val-dtl').text.strip()
+        self.details['bookmark'] = self.soup.select_one('span.rdheader-rating__hozon-target em.num').text.strip()
+        self.details['comment'] = self.soup.select_one('span.rdheader-rating__review-target em.num').text.strip()
+        self.details['update'] = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        self.details['address'], self.details['latitude'], self.details['longitude'] = self._extract_address()
+        self.details['award'] = self._extract_award()
+        return [self.details]
 
-#     Parameters:
-#         category_list (list): A list of dictionaries containing the category name and URL.
-
-#     Returns:
-#         list: A list of dictionaries containing the restaurant name and URL.
-#     """
-#     restaurant_list = []
-#     for category in category_list:
-#         page = get_page(category['url'])
-#         restaurant_items = page.select('ul.hyakumeiten-list__list li.hyakumeiten-list__item')
-#         for item in restaurant_items:
-#             restaurant_list.append({'category': category['category'], 'restaurant': item.select_one('a').text.strip(), 'url': url + item.select_one('a').get('href')})
-#     return restaurant_list
-
-
-# def create_category_list(page) -> list:
-#     """
-#     Retrieves the list of categories from the category page and returns it as a list of dictionaries.
-
-#     Returns:
-#         list: A list of dictionaries containing the category name and URL.
-#     """
-#     category_list = []
-#     hyakumeiten_items = page.select('ul.hyakumeiten-nav__list li.hyakumeiten-nav__item')
-#     for item in hyakumeiten_items:
-#         title = item.select_one('p').text.strip()
-#         for link in item.select('a'):
-#             category_name = title + ' ' + link.text.strip() if title != link.text.strip() else title
-#             category_list.append({'category': category_name, 'url': url + link.get('href')})
-#     return category_list
-
-# Usage
 if __name__ == '__main__':
-    print(load_restaurants('https://award.tabelog.com/hyakumeiten/okonomiyaki'))
+    # url = 'https://tabelog.com/kagoshima/A4601/A460105/46005607/'
+    url = 'https://tabelog.com/kagoshima/A4601/A460105/46000828/'    
+    details = load_restaurant_details(url)
+    print(details)
