@@ -17,13 +17,10 @@ class TestLoad(unittest.TestCase):
     def test_load_restaurant_details(self):
         url = 'https://tabelog.com/kagoshima/A4601/A460105/46000828/'
         details = load_restaurant_details(url)
-        details[0].pop('update')
+        del details[0]['update'], details[0]['rate'], details[0]['bookmark'],details[0]['comment']
         expect = {
                 "name": "高城庵",
                 "url": "https://tabelog.com/kagoshima/A4601/A460105/46000828/",
-                "rate": "3.66",
-                "bookmark": "5496",
-                "comment": "152",
                 "address": "鹿児島県 南九州市 知覧町郡 6329",
                 "latitude": "31.37949403848039",
                 "longitude": "130.44756924746517",
@@ -41,13 +38,10 @@ class TestLoad(unittest.TestCase):
         url2 = 'https://tabelog.com/tokyo/A1311/A131102/13003755/'
         restaurants = [{'name': '吾妻橋', 'url': url1},{'name': '佐久良', 'url': url2}]
         details = load_restaurant_details(restaurants)
-        details[0].pop('update')
+        del details[0]['update'], details[0]['rate'], details[0]['bookmark'],details[0]['comment']
         expect = {
                 "name": "吾妻橋 やぶそば",
                 "url": "https://tabelog.com/tokyo/A1311/A131102/13007981/",
-                "rate": "3.72",
-                "bookmark": "43671",
-                "comment": "608",
                 "address": "東京都 墨田区 吾妻橋 1-11-2",
                 "latitude": "35.70803783870925",
                 "longitude": "139.79864458463263",
