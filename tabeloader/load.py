@@ -1,11 +1,12 @@
 import datetime
+import pprint
 import random
 import re
 import requests
 import time
 from bs4 import BeautifulSoup
 
-def load_restaurants(url) -> list:
+def load_restaurants(url=None) -> list:
     """
     Loads a list of restaurants from the given URL.
 
@@ -18,6 +19,12 @@ def load_restaurants(url) -> list:
     Raises:
         ValueError: If the URL format is invalid.
     """
+    if url is None:
+        page = _download_page('https://award.tabelog.com/hyakumeiten')
+        print('Please provide a URL from the following categories:')
+        [print(v + ' : '+ k) for k, v in _create_category(page).items()]
+        print("------")
+        raise ValueError('Error: URL is required.')
     page = _download_page(url)
     return _create_restaurants_list(page)
 
@@ -62,6 +69,23 @@ def _download_page(url) -> BeautifulSoup:
     except requests.exceptions.RequestException as e:
         raise ValueError(f'Error: Failed to retrieve the page. {str(e)}')
     return BeautifulSoup(response.text, 'html.parser')
+
+def _create_category(page) -> dict:
+    """
+    Retrieves the list of categories from the category page and returns it as a list of dictionaries.
+
+    Returns:
+        list: A list of dictionaries containing the category name and URL.
+    """
+    category = {}
+    hyakumeiten_items = page.select('ul.hyakumeiten-nav__list li.hyakumeiten-nav__item')
+    for item in hyakumeiten_items:
+        title = item.select_one('p').text.strip()
+        for link in item.select('a'):
+            category_name = title + ' ' + link.text.strip() if title != link.text.strip() else title
+            category['https://award.tabelog.com' + link.get('href')] = category_name
+    del category['https://award.tabelog.com/hyakumeiten']
+    return category
 
 def _create_restaurants_list(soup) -> list:
     """
