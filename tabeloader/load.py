@@ -1,5 +1,4 @@
 import datetime
-import pprint
 import random
 import re
 import requests
@@ -143,9 +142,9 @@ class RestaurantDetailsExtractor:
         Returns:
             str: The award category of the restaurant.
         """
-        badge = self.soup.select_one('div.rstinfo-table-badge-award')
+        badge = self.soup.select_one('td.rstinfo-badge')
         if badge:
-            category = badge.select_one('span i').text.strip()
+            category = ', '.join([x.text.strip() for x in badge.select('span i')])
             return category.replace(" 選出店", "")
         else:
             return ''

@@ -15,16 +15,16 @@ class TestLoad(unittest.TestCase):
             load_restaurants(url)
 
     def test_load_restaurant_details(self):
-        url = 'https://tabelog.com/kagoshima/A4601/A460105/46000828/'
+        url = 'https://tabelog.com/tokyo/A1301/A130101/13002616/'
         details = load_restaurant_details(url)
         del details[0]['update'], details[0]['rate'], details[0]['bookmark'],details[0]['comment']
         expect = {
-                "name": "高城庵",
-                "url": "https://tabelog.com/kagoshima/A4601/A460105/46000828/",
-                "address": "鹿児島県 南九州市 知覧町郡 6329",
-                "latitude": "31.37949403848039",
-                "longitude": "130.44756924746517",
-                "award": "定食 百名店 2021"
+                "name": "デリー 銀座店",
+                "url": "https://tabelog.com/tokyo/A1301/A130101/13002616/",
+                "address": "東京都 中央区 銀座 6-3-11 西銀座ビル 3F",
+                "latitude": "35.67118233872062",
+                "longitude": "139.76084268428684",
+                "award": "アジア・エスニック 百名店 2023, アジア・エスニック 百名店 2022, カレー 百名店 2020, カレー 百名店 2019"
         }
         self.assertDictEqual(details[0], expect)
 
@@ -45,7 +45,7 @@ class TestLoad(unittest.TestCase):
                 "address": "東京都 墨田区 吾妻橋 1-11-2",
                 "latitude": "35.70803783870925",
                 "longitude": "139.79864458463263",
-                "award": "そば 百名店 2024"
+                "award": "そば 百名店 2024, そば 百名店 2022, そば 百名店 2021, そば 百名店 2019, そば 百名店 2018, そば 百名店 2017"
         }
         self.assertDictEqual(details[0], expect)
         self.assertEqual(len(details), 2)
