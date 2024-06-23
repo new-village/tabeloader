@@ -50,8 +50,8 @@ The `load_restaurant_details` function can be executed with a URL as argument to
 The `load_restaurant_details` function supports string argument that is a specific restaurant URL of the [Tabelog](https://tabelog.com/en/) website. The function also can be executed with a URL as argument to obtain the URL, name, address, award etc.
 ```python
 >>> import tabeloader
->>> restaurants = tabeloader.load_restaurant_details('https://tabelog.com/tokyo/X1234/X123456/12345678/')
->>> print(restaurants)
+>>> details = tabeloader.load_restaurant_details('https://tabelog.com/tokyo/X1234/X123456/12345678/')
+>>> print(details)
 [{"name": "お店", "url": "https://tabelog.com/tokyo/X1234/X123456/12345678/", "rate": "2.14", "bookmark": "12",  "comment": "4", "address": "東京都 千代田区 12", "latitude": "31.37949403848039", "longitude": "130.44756924746517", "award": "定食 百名店 2021", "booking": True, "online_booking": True, 'lunch_budget': '-', 'dinner_budget': '￥4,000～￥4,999'}]
 ```
 

@@ -163,8 +163,8 @@ class RestaurantDetailsExtractor:
         address = self.soup.select_one('p.rstinfo-table__address').get_text(separator=" ", strip=True)
         latlong = self.soup.select_one('img.rstinfo-table__map-image').get('data-original')
         match = re.search(r'center=([-\d.]+),([-\d.]+)&', latlong)
-        latitude = match.group(1) if match else 0
-        longitude = match.group(2) if match else 0
+        latitude = float(match.group(1)) if match else 0
+        longitude = float(match.group(2)) if match else 0
         return address, latitude, longitude
 
     def _is_available_booking(self):
@@ -211,9 +211,9 @@ class RestaurantDetailsExtractor:
         """
         self.details['name'] = self.soup.select_one('h2.display-name').text.strip()
         self.details['url'] = self.url
-        self.details['rate'] = self.soup.select_one('span.rdheader-rating__score-val-dtl').text.strip()
-        self.details['bookmark'] = self.soup.select_one('span.rdheader-rating__hozon-target em.num').text.strip()
-        self.details['comment'] = self.soup.select_one('span.rdheader-rating__review-target em.num').text.strip()
+        self.details['rate'] = float(self.soup.select_one('span.rdheader-rating__score-val-dtl').text.strip())
+        self.details['bookmark'] = int(self.soup.select_one('span.rdheader-rating__hozon-target em.num').text.strip())
+        self.details['comment'] = int(self.soup.select_one('span.rdheader-rating__review-target em.num').text.strip())
         self.details['update'] = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
         self.details['address'], self.details['latitude'], self.details['longitude'] = self._extract_address()
         self.details['award'] = self._extract_award()
