@@ -50,6 +50,13 @@ class TestLoad(unittest.TestCase):
         }
         self.assertDictEqual(details[0], expect)
 
+    def test_none_is_available_booking(self):
+        # Test that booking and online_booking are both False if the booking field is none.
+        url = 'https://tabelog.com/okayama/A3305/A330501/33000402/'
+        details = load_restaurant_details(url)
+        self.assertFalse(details[0]['booking'])
+        self.assertFalse(details[0]['online_booking'])
+
     def test_load_restaurant_details_non_exist_url(self):
         url = 'https://tabelog.com/tokyo/A1234/A123456/12345678/'
         with self.assertRaises(ValueError):
