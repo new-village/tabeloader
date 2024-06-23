@@ -15,20 +15,20 @@ class TestLoad(unittest.TestCase):
             load_restaurants(url)
 
     def test_load_restaurant_details(self):
-        url = 'https://tabelog.com/tokyo/A1301/A130101/13002616/'
+        url = 'https://tabelog.com/tokyo/A1307/A130703/13229559/'
         details = load_restaurant_details(url)
         del details[0]['update'], details[0]['rate'], details[0]['bookmark'],details[0]['comment']
         expect = {
-                "name": "デリー 銀座店",
-                "url": "https://tabelog.com/tokyo/A1301/A130101/13002616/",
-                "address": "東京都 中央区 銀座 6-3-11 西銀座ビル 3F",
-                "latitude": "35.67118233872062",
-                "longitude": "139.76084268428684",
-                "award": "アジア・エスニック 百名店 2023, アジア・エスニック 百名店 2022, カレー 百名店 2020, カレー 百名店 2019",
-                "booking": True,
+                "name": "4000 Chinese Restaurant",
+                "url": "https://tabelog.com/tokyo/A1307/A130703/13229559/",
+                "address": "東京都 港区 南青山 7-10-10 パークアクシス南青山7丁目 1F",
+                "latitude": "35.65886103871501",
+                "longitude": "139.71868198419196",
+                "award": "2024年Bronze受賞店, 2023年Bronze受賞店, 2022年Bronze受賞店, 2021年Bronze受賞店, 2020年Bronze受賞店, 中国料理 百名店 2024, 中国料理 百名店 2023, 中国料理 百名店 2021",
+                "booking": False,
                 "online_booking": False,
-                "lunch_budget": '￥1,000～￥1,999',
-                "dinner_budget": '￥2,000～￥2,999' 
+                "lunch_budget": '￥15,000～￥19,999',
+                "dinner_budget": '￥30,000～￥39,999' 
         }
         self.assertDictEqual(details[0], expect)
     

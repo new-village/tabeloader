@@ -71,7 +71,7 @@ def _download_page(url) -> BeautifulSoup:
         response.encoding = response.apparent_encoding
     except requests.exceptions.RequestException as e:
         raise ValueError(f'Error: Failed to retrieve the page. {str(e)}')
-    return BeautifulSoup(response.text, 'html.parser')
+    return BeautifulSoup(response.content.decode("utf-8", "ignore"), 'html.parser')
 
 def _create_category(page) -> dict:
     """
