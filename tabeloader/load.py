@@ -175,7 +175,7 @@ class RestaurantDetailsExtractor:
             bool: True if the restaurant is available for booking, False otherwise.
         """
         reserve_status = self.soup.select_one('p.rstinfo-table__reserve-status')
-        if reserve_status and reserve_status.text.strip() == '予約可':
+        if reserve_status and reserve_status.text.strip() in ['予約可', '完全予約制']:
             return True
         else:
             return False

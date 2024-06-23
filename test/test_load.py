@@ -25,7 +25,7 @@ class TestLoad(unittest.TestCase):
                 "latitude": "35.65886103871501",
                 "longitude": "139.71868198419196",
                 "award": "2024年Bronze受賞店, 2023年Bronze受賞店, 2022年Bronze受賞店, 2021年Bronze受賞店, 2020年Bronze受賞店, 中国料理 百名店 2024, 中国料理 百名店 2023, 中国料理 百名店 2021",
-                "booking": False,
+                "booking": True,
                 "online_booking": False,
                 "lunch_budget": '￥15,000～￥19,999',
                 "dinner_budget": '￥30,000～￥39,999' 
