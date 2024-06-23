@@ -19,6 +19,15 @@ $ python setup.py install
 ## Usage
 This section describes how to use this library.  
   
+### Supported Categories
+A list of URLs supported by `load_restaurants` can be obtained with `supported_categories`.
+```python
+>>> import tabeloader
+>>> categories = tabeloader.supported_categories()
+>>> print(categories)
+{'https://award.tabelog.com/hyakumeiten/chinese_tokyo': '中国料理 百名店 TOKYO', ... }
+```
+
 ### Get top 100 restaurants list
 Copy the URL of the category for which you want to create a listing from the [Hyakumeiten](https://award.tabelog.com/hyakumeiten) website. The `load_restaurants` function can be executed with a URL as argument to obtain the URLs and names of the top 100 restaurants in list of dict format.
 ```python

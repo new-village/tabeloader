@@ -5,7 +5,17 @@ import requests
 import time
 from bs4 import BeautifulSoup
 
-def load_restaurants(url=None) -> list:
+def supported_categories() -> dict:
+    """
+    Returns a dictionary of supported categories and their URLs.
+
+    Returns:
+        dict: A dictionary containing the supported categories and their URLs.
+    """
+    page = _download_page('https://award.tabelog.com/hyakumeiten')
+    return _create_category(page)
+
+def load_restaurants(url) -> list:
     """
     Loads a list of restaurants from the given URL.
 
@@ -18,12 +28,6 @@ def load_restaurants(url=None) -> list:
     Raises:
         ValueError: If the URL format is invalid.
     """
-    if url is None:
-        page = _download_page('https://award.tabelog.com/hyakumeiten')
-        print('Please provide a URL from the following categories:')
-        [print(v + ' : '+ k) for k, v in _create_category(page).items()]
-        print("------")
-        raise ValueError('Error: URL is required.')
     page = _download_page(url)
     return _create_restaurants_list(page)
 

@@ -1,7 +1,7 @@
 # test/test_load.py
 
 import unittest
-from tabeloader.load import load_restaurants, load_restaurant_details
+from tabeloader.load import load_restaurants, load_restaurant_details, supported_categories
 
 class TestLoad(unittest.TestCase):
     def test_load_restaurants(self):
@@ -49,6 +49,14 @@ class TestLoad(unittest.TestCase):
         }
         self.assertDictEqual(details[0], expect)
         self.assertEqual(len(details), 2)
+    
+    def test_supported_categories(self):
+        categories = supported_categories()
+        self.assertIsInstance(categories, dict)
+        self.assertGreater(len(categories), 10)
+        self.assertIn("https://award.tabelog.com/hyakumeiten/chinese_tokyo", categories)
+        self.assertIn("https://award.tabelog.com/hyakumeiten/ramen_tokyo", categories)
+        self.assertIn("https://award.tabelog.com/hyakumeiten/yakiniku_tokyo", categories)
 
 if __name__ == '__main__':
     unittest.main()
