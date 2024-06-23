@@ -26,7 +26,9 @@ class TestLoad(unittest.TestCase):
                 "longitude": "139.76084268428684",
                 "award": "アジア・エスニック 百名店 2023, アジア・エスニック 百名店 2022, カレー 百名店 2020, カレー 百名店 2019",
                 "booking": True,
-                "online_booking": False
+                "online_booking": False,
+                "lunch_budget": '￥1,000～￥1,999',
+                "dinner_budget": '￥2,000～￥2,999' 
         }
         self.assertDictEqual(details[0], expect)
     
@@ -42,7 +44,9 @@ class TestLoad(unittest.TestCase):
                 "longitude": "139.71932188448693",
                 "award": "居酒屋 百名店 2022",
                 "booking": True,
-                "online_booking": True
+                "online_booking": True,
+                "lunch_budget": '-',
+                "dinner_budget": '￥8,000～￥9,999'
         }
         self.assertDictEqual(details[0], expect)
 
@@ -65,7 +69,9 @@ class TestLoad(unittest.TestCase):
                 "longitude": "139.79864458463263",
                 "award": "そば 百名店 2024, そば 百名店 2022, そば 百名店 2021, そば 百名店 2019, そば 百名店 2018, そば 百名店 2017",
                 "booking": False,
-                "online_booking": False
+                "online_booking": False,
+                "lunch_budget": '￥1,000～￥1,999',
+                "dinner_budget": '￥2,000～￥2,999'
         }
         self.assertDictEqual(details[0], expect)
         self.assertEqual(len(details), 2)

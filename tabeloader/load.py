@@ -188,6 +188,19 @@ class RestaurantDetailsExtractor:
         """
         return bool(self.soup.select_one('div.rstdtl-side-yoyaku__booking'))
 
+    def _extract_budget(self):
+        """
+        Extracts the lunch and dinner budget of the restaurant.
+
+        Returns:
+            tuple: A tuple containing the lunch budget (str) and dinner budget (str) of the restaurant.
+        """
+        lunch = self.soup.select_one('div.rdheader-budget i[aria-label="Lunch"]')
+        lunch_budget = lunch.parent.a.text.strip() if lunch else ''
+        dinner = self.soup.select_one('div.rdheader-budget i[aria-label="Dinner"]')
+        dinner_budget = dinner.parent.a.text.strip() if dinner else ''
+        return lunch_budget, dinner_budget
+
     def create_restaurant_details(self):
         """
         Creates and returns a list containing the extracted restaurant details.
@@ -205,6 +218,7 @@ class RestaurantDetailsExtractor:
         self.details['award'] = self._extract_award()
         self.details['booking'] = self._is_available_booking()
         self.details['online_booking'] = self._is_available_online_booking()
+        self.details['lunch_budget'], self.details['dinner_budget'] = self._extract_budget()
         return [self.details]
 
 class BulkRestaurantDetailsExtractor(RestaurantDetailsExtractor):
@@ -249,5 +263,6 @@ class BulkRestaurantDetailsExtractor(RestaurantDetailsExtractor):
                 'online_booking': self._is_available_online_booking()
             }
             detail['address'], detail['latitude'], detail['longitude'] = self._extract_address()
+            detail['lunch_budget'], detail['dinner_budget'] = self._extract_budget()
             self.details.append(detail)            
         return self.details
