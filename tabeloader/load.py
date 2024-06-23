@@ -167,6 +167,27 @@ class RestaurantDetailsExtractor:
         longitude = match.group(2) if match else 0
         return address, latitude, longitude
 
+    def _is_available_booking(self):
+        """
+        Check if the restaurant is available for booking.
+
+        Returns:
+            bool: True if the restaurant is available for booking, False otherwise.
+        """
+        if self.soup.select_one('p.rstinfo-table__reserve-status').text.strip() == '予約可':
+            return True
+        else:
+            return False
+
+    def _is_available_online_booking(self):
+        """
+        Check if the restaurant is available for booking.
+
+        Returns:
+            bool: True if the restaurant is available for booking, False otherwise.
+        """
+        return bool(self.soup.select_one('div.rstdtl-side-yoyaku__booking'))
+
     def create_restaurant_details(self):
         """
         Creates and returns a list containing the extracted restaurant details.
@@ -182,6 +203,8 @@ class RestaurantDetailsExtractor:
         self.details['update'] = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
         self.details['address'], self.details['latitude'], self.details['longitude'] = self._extract_address()
         self.details['award'] = self._extract_award()
+        self.details['booking'] = self._is_available_booking()
+        self.details['online_booking'] = self._is_available_online_booking()
         return [self.details]
 
 class BulkRestaurantDetailsExtractor(RestaurantDetailsExtractor):
@@ -221,7 +244,9 @@ class BulkRestaurantDetailsExtractor(RestaurantDetailsExtractor):
                 'bookmark': self.soup.select_one('span.rdheader-rating__hozon-target em.num').text.strip(),
                 'comment': self.soup.select_one('span.rdheader-rating__review-target em.num').text.strip(),
                 'update': datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
-                'award': self._extract_award()
+                'award': self._extract_award(),
+                'booking': self._is_available_booking(),
+                'online_booking': self._is_available_online_booking()
             }
             detail['address'], detail['latitude'], detail['longitude'] = self._extract_address()
             self.details.append(detail)            

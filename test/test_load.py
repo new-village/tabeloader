@@ -24,7 +24,25 @@ class TestLoad(unittest.TestCase):
                 "address": "東京都 中央区 銀座 6-3-11 西銀座ビル 3F",
                 "latitude": "35.67118233872062",
                 "longitude": "139.76084268428684",
-                "award": "アジア・エスニック 百名店 2023, アジア・エスニック 百名店 2022, カレー 百名店 2020, カレー 百名店 2019"
+                "award": "アジア・エスニック 百名店 2023, アジア・エスニック 百名店 2022, カレー 百名店 2020, カレー 百名店 2019",
+                "booking": True,
+                "online_booking": False
+        }
+        self.assertDictEqual(details[0], expect)
+    
+    def test_load_restaurant_details_online_booking_available(self):
+        url = 'https://tabelog.com/tokyo/A1309/A130903/13194182/'
+        details = load_restaurant_details(url)
+        del details[0]['update'], details[0]['rate'], details[0]['bookmark'],details[0]['comment']
+        expect = {
+                "name": "卯水酉",
+                "url": "https://tabelog.com/tokyo/A1309/A130903/13194182/",
+                "address": "東京都 新宿区 四谷 3-11-17 第二光明堂 B1F",
+                "latitude": "35.68811063869665",
+                "longitude": "139.71932188448693",
+                "award": "居酒屋 百名店 2022",
+                "booking": True,
+                "online_booking": True
         }
         self.assertDictEqual(details[0], expect)
 
@@ -45,7 +63,9 @@ class TestLoad(unittest.TestCase):
                 "address": "東京都 墨田区 吾妻橋 1-11-2",
                 "latitude": "35.70803783870925",
                 "longitude": "139.79864458463263",
-                "award": "そば 百名店 2024, そば 百名店 2022, そば 百名店 2021, そば 百名店 2019, そば 百名店 2018, そば 百名店 2017"
+                "award": "そば 百名店 2024, そば 百名店 2022, そば 百名店 2021, そば 百名店 2019, そば 百名店 2018, そば 百名店 2017",
+                "booking": False,
+                "online_booking": False
         }
         self.assertDictEqual(details[0], expect)
         self.assertEqual(len(details), 2)
