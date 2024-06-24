@@ -56,8 +56,16 @@ class TestLoad(unittest.TestCase):
         details = load_restaurant_details(url)
         self.assertFalse(details[0]['booking'])
         self.assertFalse(details[0]['online_booking'])
+    
+    def test_irregular_address(self):
+        # Test that these is no map in the address field.
+        url = 'https://tabelog.com/tokyo/A1317/A131701/13216607/'
+        details = load_restaurant_details(url)
+        self.assertEqual(details[0]['address'], '東京都 目黒区')
+        self.assertEqual(details[0]['latitude'], 0)
+        self.assertEqual(details[0]['longitude'], 0)
 
-    def test_load_restaurant_details_non_exist_url(self):
+    def test_load_resturant_details_non_exist_url(self):
         url = 'https://tabelog.com/tokyo/A1234/A123456/12345678/'
         with self.assertRaises(ValueError):
             load_restaurant_details(url)
