@@ -164,7 +164,7 @@ class RestaurantDetailsExtractor:
         # check map existing
         latitude = longitude = 0 
         map_image = self.soup.select_one('img.rstinfo-table__map-image')
-        if map:
+        if map_image:
             match = re.search(r'center=([-\d.]+),([-\d.]+)&', map_image.get('data-original'))
             latitude = float(match.group(1)) if match else 0
             longitude = float(match.group(2)) if match else 0
