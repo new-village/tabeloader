@@ -161,10 +161,13 @@ class RestaurantDetailsExtractor:
             tuple: A tuple containing the address (str), latitude (str), and longitude (str) of the restaurant.
         """
         address = self.soup.select_one('p.rstinfo-table__address').get_text(separator=" ", strip=True)
-        latlong = self.soup.select_one('img.rstinfo-table__map-image').get('data-original')
-        match = re.search(r'center=([-\d.]+),([-\d.]+)&', latlong)
-        latitude = float(match.group(1)) if match else 0
-        longitude = float(match.group(2)) if match else 0
+        # check map existing
+        latitude = longitude = 0 
+        map_image = self.soup.select_one('img.rstinfo-table__map-image')
+        if map:
+            match = re.search(r'center=([-\d.]+),([-\d.]+)&', map_image.get('data-original'))
+            latitude = float(match.group(1)) if match else 0
+            longitude = float(match.group(2)) if match else 0
         return address, latitude, longitude
 
     def _is_available_booking(self):
