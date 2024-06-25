@@ -71,9 +71,8 @@ class TestLoad(unittest.TestCase):
             load_restaurant_details(url)
     
     def test_bulkload_restaurant_details(self):
-        url1 = 'https://tabelog.com/tokyo/A1311/A131102/13007981/'
-        url2 = 'https://tabelog.com/tokyo/A1311/A131102/13003755/'
-        restaurants = [{'name': '吾妻橋', 'url': url1},{'name': '佐久良', 'url': url2}]
+        url = 'https://tabelog.com/tokyo/A1311/A131102/13007981/'
+        restaurants = [{'name': '吾妻橋', 'url': url},{'name': 'パティシエ エス コヤマ', 'url': None}]
         details = load_restaurant_details(restaurants)
         del details[0]['update'], details[0]['rate'], details[0]['bookmark'],details[0]['comment']
         expect = {
@@ -89,6 +88,7 @@ class TestLoad(unittest.TestCase):
                 "dinner_budget": '￥2,000～￥2,999'
         }
         self.assertDictEqual(details[0], expect)
+        self.assertEqual(details[1]['url'], 'https://tabelog.com/hyogo/A2807/A280703/28001965/')
         self.assertEqual(len(details), 2)
     
     def test_supported_categories(self):

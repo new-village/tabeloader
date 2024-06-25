@@ -3,6 +3,7 @@ import random
 import re
 import requests
 import time
+import urllib.parse
 from bs4 import BeautifulSoup
 
 def supported_categories() -> dict:
@@ -245,6 +246,21 @@ class BulkRestaurantDetailsExtractor(RestaurantDetailsExtractor):
         self.restaurants = restaurants
         self.details = []
 
+    def _search_restaurant(self, name):
+        """
+        Search for a restaurant on Tabelog using the given name.
+
+        Args:
+            name (str): The name of the restaurant to search for.
+
+        Returns:
+            str: The URL of the restaurant if found, None otherwise.
+        """
+        url = 'https://tabelog.com/rst/rstsearch?sa=&sk={}'.format(name)
+        page = _download_page(url)
+        result = page.select_one('div.list-rst__body a.list-rst__rst-name-target')
+        return result.get('href') if result else None
+
     def create_restaurant_details(self):
         """
         Creates restaurant details for each restaurant in the list.
@@ -255,6 +271,9 @@ class BulkRestaurantDetailsExtractor(RestaurantDetailsExtractor):
         for resto in self.restaurants:
             # Randomly sleep for 1 to 3 seconds to avoid being blocked
             time.sleep(random.randint(1, 3))
+            # Check if the URL is valid
+            if resto['url'] is None:
+                resto['url'] = self._search_restaurant(resto['name'])
             self.soup = _download_page(resto['url'])
             detail = {
                 'name': self.soup.select_one('h2.display-name').text.strip(),
