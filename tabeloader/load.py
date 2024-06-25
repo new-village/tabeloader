@@ -194,6 +194,16 @@ class RestaurantDetailsExtractor:
         """
         return bool(self.soup.select_one('div.rstdtl-side-yoyaku__booking'))
 
+    def _extract_booking_notice(self):
+        """
+        Extracts the booking notice of the restaurant.
+
+        Returns:
+            str: The booking notice of the restaurant.
+        """
+        reserve_notice = self.soup.select_one('p.rstinfo-table__reserve-notice')
+        return reserve_notice.text.strip() if reserve_notice else ''
+
     def _extract_budget(self):
         """
         Extracts the lunch and dinner budget of the restaurant.
@@ -224,6 +234,8 @@ class RestaurantDetailsExtractor:
         self.details['award'] = self._extract_award()
         self.details['booking'] = self._is_available_booking()
         self.details['online_booking'] = self._is_available_online_booking()
+        self.details['booking_notice'] = self._extract_booking_notice()
+
         self.details['lunch_budget'], self.details['dinner_budget'] = self._extract_budget()
         return [self.details]
 
@@ -284,7 +296,8 @@ class BulkRestaurantDetailsExtractor(RestaurantDetailsExtractor):
                 'update': datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
                 'award': self._extract_award(),
                 'booking': self._is_available_booking(),
-                'online_booking': self._is_available_online_booking()
+                'online_booking': self._is_available_online_booking(),
+                'booking_notice': self._extract_booking_notice()
             }
             detail['address'], detail['latitude'], detail['longitude'] = self._extract_address()
             detail['lunch_budget'], detail['dinner_budget'] = self._extract_budget()

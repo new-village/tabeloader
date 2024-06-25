@@ -27,6 +27,7 @@ class TestLoad(unittest.TestCase):
                 "award": "2024年Bronze受賞店, 2023年Bronze受賞店, 2022年Bronze受賞店, 2021年Bronze受賞店, 2020年Bronze受賞店, 中国料理 百名店 2024, 中国料理 百名店 2023, 中国料理 百名店 2021",
                 "booking": True,
                 "online_booking": False,
+                "booking_notice": "ご予約はOMAKASEのウェブサイトより",
                 "lunch_budget": '￥15,000～￥19,999',
                 "dinner_budget": '￥30,000～￥39,999' 
         }
@@ -45,6 +46,7 @@ class TestLoad(unittest.TestCase):
                 "award": "居酒屋 百名店 2022",
                 "booking": True,
                 "online_booking": True,
+                "booking_notice": "コースや鍋のご利用をご検討の場合、事前のご予約をお願いしております。",
                 "lunch_budget": '-',
                 "dinner_budget": '￥8,000～￥9,999'
         }
@@ -84,6 +86,7 @@ class TestLoad(unittest.TestCase):
                 "award": "そば 百名店 2024, そば 百名店 2022, そば 百名店 2021, そば 百名店 2019, そば 百名店 2018, そば 百名店 2017",
                 "booking": False,
                 "online_booking": False,
+                "booking_notice": "",
                 "lunch_budget": '￥1,000～￥1,999',
                 "dinner_budget": '￥2,000～￥2,999'
         }
